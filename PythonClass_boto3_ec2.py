@@ -72,9 +72,17 @@ ec2_client = boto3.client('ec2')
 
 
 # Create EC2 SG
-ec2_create_sg("ssh", "ssh_sg2")
+# ec2_create_sg("ssh", "ssh_sg2")
 
 # Create EC2 Key
-ec2_create_key("ssh_key2")
+# ec2_create_key("ssh_key2")
 
-ec2_resource.create_instances(ImageId='ami-f2d3638a', MinCount=1, MaxCount=1, SecurityGroups=['ssh_sg2'], KeyName='ssh_key2', InstanceType='t2.micro')
+# instance = ec2_resource.create_instances(ImageId='ami-f2d3638a', MinCount=1, MaxCount=1, SecurityGroups=['ssh_sg2'], KeyName='ssh_key2', InstanceType='t2.micro')
+# print(instance)
+
+# Use the filter() method of the instances collection to retrieve
+# all running EC2 instances.
+instances = ec2_resource.instances.filter(
+    Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
+for instance in instances:
+    print(instance.id, instance.instance_type)
